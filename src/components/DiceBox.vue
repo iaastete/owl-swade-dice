@@ -1,9 +1,11 @@
 <script setup>
 import Bubble from './Bubble.vue';
 import Dice from '../classes/dice.js';
+
 import { ref, computed, watch } from 'vue';
 
 const props = defineProps(['path', 'sides', 'minAmount', 'explode', 'roll', 'clear']);
+const emits = defineEmits(['list', 'wild', 'done']);
 const dice = new Dice(props.sides);
 
 const lastResult = ref([]);
@@ -38,7 +40,12 @@ watch(props, (newVal, oldVal) => {
             setTimeout(() => {
                 if (newVal?.minAmount) wildResult.value = dice.roll(explode.value);
                 lastResult.value = dice.rollMultiple(amountToRoll.value, explode.value);
+                emits('list', lastResult.value);
+                emits('wild', wildResult.value);
+                emits('done', true);
             }, 200);
+        } else {
+            emits('done', true);
         }
     }
 
