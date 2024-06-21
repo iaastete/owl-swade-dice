@@ -7,22 +7,21 @@ const playerName = ref('');
 const setupPopover = () => {
     OBR.popover.open({
         id: `${ID}/popover`,
-        width: 300,
-        height: 300,
+        url: "/results",
+        width: 0,
+        height: 0,
         anchorOrigin: { horizontal: "RIGHT", vertical: "BOTTOM"},
         transformOrigin: { horizontal: "RIGHT", vertical: "BOTTOM"},
         disableClickAway: true,
         hidePaper: true,
-        url: "/results",
     });
 };
 
 const temporaryOpen = async () => {
     const popover = OBR.popover
-    return ;
     await Promise.all([
-        popover.setWidth(`${ID}/popover`, 300),
-        popover.setHeight(`${ID}/popover`, 300),
+        popover.setWidth(`${ID}/popover`, 330),
+        popover.setHeight(`${ID}/popover`, 110),
     ])
 
     setTimeout( async () => {
@@ -30,7 +29,7 @@ const temporaryOpen = async () => {
             popover.setWidth(`${ID}/popover`, 0),
             popover.setHeight(`${ID}/popover`, 0),
         ])
-    }, 2000);
+    }, 5000);
 };
 
 const setupComms = () => {

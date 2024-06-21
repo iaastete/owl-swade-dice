@@ -3,13 +3,24 @@ import { sendResults, playerName } from '../sync/dice-results';
 import DiceBox from './DiceBox.vue'
 import { ref } from 'vue'
 
-const props = defineProps(['autoWild', 'autoExplode', 'roll', 'clear'])
+const props = defineProps(['autoWild', 'autoExplode', 'high', 'low', 'roll', 'clear'])
+const emits = defineEmits(['list'])
 
 const doneCounter = ref(0);
 const handleDone = () => {
     doneCounter.value++;
     if (doneCounter.value == 6) {
-        sendResults({ player: playerName.value, list: JSON.stringify(totals.value) });
+        sendResults({
+            player: playerName.value,
+            list: JSON.stringify(totals.value),
+            preferences: {
+                autoWild: props.autoWild,
+                autoExplode: props.autoExplode,
+                high: props.high,
+                low: props.low
+            }
+        });
+        emits('list', totals.value);
         totals.value = [];
         doneCounter.value = 0;
     }
@@ -24,11 +35,6 @@ const handleWild = (wild) => {
     if (wild == 0) return;
     totals.value.push({ type: 'wild', list: wild });
 }
-// sendResults({
-//     player: 
-//     list: lastResult.value.toString(),
-// });
-
 </script>
 
 <template>
@@ -71,8 +77,9 @@ const handleWild = (wild) => {
 <style scoped>
 .dice-container {
     display: flex;
+    flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    padding: 10px;
+    gap: 13px;
 }
 </style>

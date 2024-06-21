@@ -17,7 +17,9 @@ const props = defineProps(['message'])
     background-color: var(--color-bubble-bg);
     position: absolute;
     top: -7px;
+    right: -7px;
     font-size: 14px;
+    line-height: 16px;
     color: white;
 }
 </style>

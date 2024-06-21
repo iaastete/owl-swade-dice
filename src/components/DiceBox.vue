@@ -10,16 +10,6 @@ const dice = new Dice(props.sides);
 
 const lastResult = ref([]);
 const wildResult = ref(0);
-const critFail = (num) => num == 1;
-const critSuccess = (num, solo=false) => {
-    if (solo) return num >= props.sides;
-    if (!amountToRoll.value) return num >= props.sides;
-    return num >= props.sides * amountToRoll.value;
-};
-const sumResult = computed(() => {
-    const sum = lastResult.value.reduce((acc, curr) => acc + curr, 0)
-    return sum ? sum : '';
-});
 
 const explode = ref(false);
 const lastRoll = ref(false);
@@ -38,12 +28,12 @@ watch(props, (newVal, oldVal) => {
         lastResult.value = [];
         if (amountToRoll.value > 0 || newVal.minAmount) {
             setTimeout(() => {
-                if (newVal?.minAmount) wildResult.value = dice.roll(explode.value);
+                if (newVal?.minAmount) wildResult.value = [dice.roll(explode.value)];
                 lastResult.value = dice.rollMultiple(amountToRoll.value, explode.value);
                 emits('list', lastResult.value);
                 emits('wild', wildResult.value);
                 emits('done', true);
-            }, 200);
+            }, 150);
         } else {
             emits('done', true);
         }
@@ -80,76 +70,19 @@ const handleDiceRightClick = (event, shift=false) => {
             <img :src="path" />
             <p>{{ sides }}</p>
             <Transition name="pop">
-                <Bubble style="right: -7px" v-if="showBubble" :message="amountToRoll"/>
+                <Bubble v-if="showBubble" :message="amountToRoll"/>
             </Transition>
             <Transition name="pop">
                 <Bubble class="wild-selection" v-if="minAmount" :message="'★'"/>
             </Transition>
         </button>
-        <div class="dice-result"
-        :title="lastResult.join(', ')"
-        >
-            <p 
-            v-if="minAmount"
-            :class="{ 'top-left-corner': minAmount && amountToRoll, 'success': critSuccess(wildResult, true), 'failure': critFail(wildResult) }"
-            >
-                {{ wildResult ? wildResult : ''}}★
-            </p>
-            <hr v-if="minAmount && amountToRoll" class="split"/>
-            <p
-            v-if="amountToRoll"
-            :class="{ 'bottom-right-corner': minAmount && amountToRoll, 'success': critSuccess(sumResult), 'failure': critFail(sumResult) }"
-            >
-                {{ sumResult }}
-            </p>
-        </div>
     </div>
 </template>
 
 <style scoped>
-.split {
-    width: 100%;
-    border-top: 1px solid grey;
-    border-bottom: 0px solid grey;
-    border-left: 0px solid grey;
-    border-right: 0px solid grey;
-}
-
-.top-left-corner {
-    position: absolute;
-    bottom: 3px;
-    left: 0px;
-    width: 35px;
-    height: 19px;
-    line-height: normal;
-    overflow: hidden;
-}
-.bottom-right-corner {
-    position: absolute;
-    top: 1px;
-    right: 0px;
-    width: 35px;
-    height: 19px;
-    line-height: normal;
-}
-
 .dice-structure {
     position: relative;
-    display: inline-block;
-    margin-top: 10px;
-}
-
-.dice-result {
-    position: relative;
-    margin-top: 5px;
-    border-radius: 15%;
-    border: 1px solid grey;
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
-    cursor: default;
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
@@ -170,23 +103,15 @@ button:focus {
 
 .dice-structure button p {
     position: absolute;
-    top: 0%;
+    top: -10%;
     left: 50%;
     transform: translate(-50%, calc(-18px));
     font-size: 20px;
     text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000; 
-}
-
-.success {
-    color: var(--color-success-text);
-}
-
-.failure {
-    color: var(--color-failure-text);
+    -1px -1px 0 var(--color-source-mono),
+    1px -1px 0 var(--color-source-mono),
+    -1px 1px 0 var(--color-source-mono),
+    1px 1px 0 var(--color-source-mono); 
 }
 
 .pop-enter-active, .pop-leave-active {
@@ -210,7 +135,7 @@ button:focus {
 .wild-selection {
     background-color: transparent;
     left: -7px;
-    top: -14px;
+    top: -7px;
     font-size: 20px;
 }
 
