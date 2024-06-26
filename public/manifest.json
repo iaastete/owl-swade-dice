@@ -1,0 +1,16 @@
+{
+    "name": "Swade Dice",
+    "version": "1.0.0",
+    "manifest_version": 1,
+    "author": "Ivan Astete",
+    "icon": "/dices.png",
+    "description": "A simple dice roller for Savage Worlds Adventure Edition",
+    "homepage_url": "https://owl-swade-dice.web.app/",
+    "action": {
+        "title": "Dice Roller",
+        "icon": "/icon.svg",
+        "popover": "/",
+        "height": 250,
+        "width": 400
+    }
+}
