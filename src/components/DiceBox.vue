@@ -26,9 +26,9 @@ watch(props, (newVal, oldVal) => {
         lastRoll.value = newVal?.roll;
         wildResult.value = 0;
         lastResult.value = [];
-        if (amountToRoll.value > 0 || newVal.minAmount) {
+        if (amountToRoll.value > 0 || newVal.minAmount.state) {
             setTimeout(() => {
-                if (newVal?.minAmount) wildResult.value = [dice.roll(explode.value)];
+                if (newVal?.minAmount.value == 'd'+newVal.sides) wildResult.value = [dice.roll(explode.value)];
                 lastResult.value = dice.rollMultiple(amountToRoll.value, explode.value);
                 emits('list', lastResult.value);
                 emits('wild', wildResult.value);
@@ -73,7 +73,7 @@ const handleDiceRightClick = (event, shift=false) => {
                 <Bubble v-if="showBubble" :message="amountToRoll"/>
             </Transition>
             <Transition name="pop">
-                <Bubble class="wild-selection" v-if="minAmount" :message="'★'"/>
+                <Bubble class="wild-selection" v-if="minAmount.value == 'd'+sides" :message="'★'"/>
             </Transition>
         </button>
     </div>

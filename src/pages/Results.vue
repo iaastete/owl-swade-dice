@@ -131,6 +131,7 @@ onMounted(() => {
     overflow-x: scroll;
     overflow-y: hidden;
     height: 30px;
+    display: flex;
 }
 
 .result .center {

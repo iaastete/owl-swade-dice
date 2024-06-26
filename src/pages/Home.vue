@@ -9,10 +9,17 @@ import { ref } from 'vue';
 const passList = ref([]);
 
 // states
-const autoWild = ref(false);
+const autoWild = ref({state: false, value: '0'});
 const autoExplode = ref(false);
 const autoHighest = ref(false);
 const autoLowest = ref(false);
+const handleWild = (value) => {
+    if (value === '0') {
+        autoWild.value = {state: false, value: '0'};
+    } else {
+        autoWild.value = {state: true, value};
+    }
+}
 
 // actions
 const roll = ref(false);
@@ -26,7 +33,7 @@ const handleClear = () => {
 <template>
     <header>
         <Preferences
-        @wild-die="autoWild = !autoWild"
+        @wild-die="handleWild"
         @explode-die="autoExplode = !autoExplode"
         @highest-die="autoHighest = !autoHighest"
         @lowest-die="autoLowest = !autoLowest"

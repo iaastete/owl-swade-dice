@@ -14,8 +14,8 @@ const handleDone = () => {
             player: playerName.value,
             list: JSON.stringify(totals.value),
             preferences: {
-                autoWild: props.autoWild,
-                autoExplode: props.autoExplode,
+                wild: props.autoWild.state,
+                explode: props.autoExplode,
                 high: props.high,
                 low: props.low
             }
@@ -33,7 +33,7 @@ const handleList = (type, list) => {
 }
 const handleWild = (wild) => {
     if (wild == 0) return;
-    totals.value.push({ type: 'wild', list: wild });
+    totals.value.push({ type: 'W', list: wild });
 }
 </script>
 
@@ -42,31 +42,37 @@ const handleWild = (wild) => {
     @contextmenu.prevent
     >
         <DiceBox path="/dice-d4.svg" :sides="4" :clear="clear" :roll="roll" :explode="autoExplode"
+        :min-amount="autoWild"
         @done="handleDone"
         @wild="handleWild"
         @list="handleList('d4', $event)"
         />
-        <DiceBox path="/dice-d6.svg" :sides="6" :clear="clear" :roll="roll" :explode="autoExplode" :min-amount="autoWild"
+        <DiceBox path="/dice-d6.svg" :sides="6" :clear="clear" :roll="roll" :explode="autoExplode"
+        :min-amount="autoWild"
         @done="handleDone"
         @wild="handleWild"
         @list="handleList('d6', $event)"
         />
         <DiceBox path="/dice-d8.svg" :sides="8" :clear="clear" :roll="roll" :explode="autoExplode"
+        :min-amount="autoWild"
         @done="handleDone"
         @wild="handleWild"
         @list="handleList('d8', $event)"
         />
         <DiceBox path="/dice-d10.svg" :sides="10" :clear="clear" :roll="roll" :explode="autoExplode"
+        :min-amount="autoWild"
         @done="handleDone"
         @wild="handleWild"
         @list="handleList('d10', $event)"
         />
         <DiceBox path="/dice-d12.svg" :sides="12" :clear="clear" :roll="roll" :explode="autoExplode"
+        :min-amount="autoWild"
         @done="handleDone"
         @wild="handleWild"
         @list="handleList('d12', $event)"
         />
         <DiceBox path="/dice-d20.svg" :sides="20" :clear="clear" :roll="roll" :explode="autoExplode"
+        :min-amount="autoWild"
         @done="handleDone"
         @wild="handleWild"
         @list="handleList('d20', $event)"

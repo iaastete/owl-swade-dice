@@ -2,14 +2,23 @@
 import { ref } from 'vue';
 const emits = defineEmits(['wild-die', 'explode-die', 'highest-die', 'lowest-die']);
 
-const wildDieSelected = ref(false);
 const explodeDieSelected = ref(false);
 const highestDieSelected = ref(false);
 const lowestDieSelected = ref(false);
 
+const selected = ref('0');
+const options = ref([
+    {text: 'Wild', value: '0'},
+    {text: 'Wild d4', value: 'd4'},
+    {text: 'Wild d6', value: 'd6'},
+    {text: 'Wild d8', value: 'd8'},
+    {text: 'Wild d10', value: 'd10'},
+    {text: 'Wild d12', value: 'd12'},
+    {text: 'Wild d20', value: 'd20'},
+])
+
 const wildDie = () => {
-    wildDieSelected.value = !wildDieSelected.value;
-    emits('wild-die');
+    emits('wild-die', selected.value);
 }
 const explodeDie = () => {
     explodeDieSelected.value = !explodeDieSelected.value;
@@ -39,13 +48,19 @@ const lowestDie = () => {
         <div class="action-bar"
         @contextmenu.prevent
         >
-            <button
-            class="chip"
-            :class="{ 'active': wildDieSelected }"
-            @click="wildDie"
+            <select
+            class="select-chip"
+            :class="{ 'active': selected !== '0'}"
+            v-model="selected"
+            @change="wildDie"
             >
-                Wild
-            </button>
+                <option
+                v-for="option in options"
+                :value="option.value"
+                >
+                    {{ option.text }}
+                </option>
+            </select>
             <button
             class="chip"
             :class="{ 'active': explodeDieSelected }"
@@ -83,6 +98,34 @@ const lowestDie = () => {
 .chip {
     padding: 5px 10px;
     margin: 0px 5px;
+}
+
+.select-chip {
+    border-radius: 8px;
+    border: 1px solid grey;
+    padding: 3px 5px;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background: transparent;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+.select-chip:hover {
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    border-color: var(--color-primary);
+}
+
+.select-chip:focus {
+    outline: none;
+}
+
+.select-chip option {
+    background-color: var(--color-source);
+    color: white;
 }
 
 .active {

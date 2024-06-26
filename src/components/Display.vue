@@ -2,6 +2,9 @@
 import { handleResizeText } from '../utils/resize';
 import { handleLateralScroll } from '../utils/controls';
 import { getTotal, getWildResult, getHighest, getLowest } from '../utils/sum-total';
+
+import { openModal } from '../sync/modal';
+
 import { computed, onMounted } from 'vue';
 
 const props = defineProps(['list', 'wild', 'high', 'low'])
@@ -43,10 +46,12 @@ onMounted(() => {
             v-for="item in props.list"
             >
                 <p class="bold">{{ item.type }}: &#160</p>
-                <p>{{ item.list }}</p>
+                <p>{{ item.list.join(', ') }}</p>
             </div>
         </div>
-        <button>
+        <button
+        @click="openModal(props.list)"
+        >
             <img src="/arrow-up-right-from-square.svg" />
         </button>
     </div>
@@ -129,5 +134,9 @@ button:focus {
 
 .bold {
     font-weight: 700;
+}
+
+svg {
+    height: 20px;
 }
 </style>
