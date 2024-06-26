@@ -1,7 +1,7 @@
 <script setup>
 import { sendResults, playerName } from '../sync/dice-results';
 import DiceBox from './DiceBox.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps(['autoWild', 'autoExplode', 'high', 'low', 'roll', 'clear'])
 const emits = defineEmits(['list'])
@@ -35,6 +35,17 @@ const handleWild = (wild) => {
     if (wild == 0) return;
     totals.value.push({ type: 'W', list: wild });
 }
+
+watch(() => props.clear, () => {
+    totals.value = [];
+    doneCounter.value = 0;
+    emits('list', totals.value);
+})
+
+watch(() => props.roll, () => {
+    totals.value = [];
+    emits('list', totals.value);
+})
 </script>
 
 <template>
