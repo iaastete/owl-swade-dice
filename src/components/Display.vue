@@ -11,7 +11,10 @@ const props = defineProps(['list', 'wild', 'high', 'low'])
 
 const handleFilters = computed(() => {
     if (props?.high) return getHighest(props?.list);
-    if (props?.low) return getLowest(props?.list);
+    if (props?.low) {
+        const result = getLowest(props?.list);
+        return result === Infinity ? 0 : result;
+    }
     if (props?.wild) return getWildResult(props?.list);
     return getTotal(props?.list);   
 });

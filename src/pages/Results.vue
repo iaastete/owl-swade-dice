@@ -65,7 +65,7 @@ onMounted(() => {
             v-for="item in data"
             >
                 <p class="bold">{{ item.type }}: &#160</p>
-                <p>{{ item.list }}</p>
+                <p>{{ item.list.join(', ') }}</p>
             </div>
         </div>
     </div>
